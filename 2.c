@@ -31,13 +31,10 @@ void generate_vector(int **vector, int vector_size){
     *vector = malloc(vector_size*sizeof(int));
     int random_number;
 
-    srand(time(NULL));
-
     for(int i = 0; i<vector_size; i++){
 
         random_number = rand() % 20+1;
         (*vector)[i] = random_number;
-        sleep(1);
     
     }
     
@@ -96,13 +93,15 @@ void mult_vector(int *vector1, int *vector2, int *vector_res, int vector_size){
 int main(){
 
     pid_t new_pid, parent, child;
-    int status, vector_size, x;
+    int status, vector_size;
     int *vector_a, *vector_b;
     
 
     vector_size = get_vector_size();
 
     int *vector_c = malloc(vector_size*sizeof(int));
+
+    srand(time(NULL));
 
     generate_vector(&vector_a, vector_size);
     generate_vector(&vector_b, vector_size);
@@ -118,11 +117,10 @@ int main(){
         if(child % 2 == 0){
 
             waitpid(new_pid, &status, 0);
-            sleep(5);
             printf("FILHO DE ID %d ENCERROU OPERAÇÔES. PAI DE ID %d ENCERRANDO.\n", new_pid, child);
         }else{
 
-            printf("PAI DE ID %d ENCERRANDO. FILHO DE ID %d TALVEZ AINDA OPERANDO.\n", child, new_pid);
+            printf("PAI DE ID %d ENCERRANDO. FILHO DE ID %d PODE AINDA ESTAR EXECUTANDO.\n", child, new_pid);
         }
 
     }else{
@@ -163,7 +161,7 @@ int main(){
             print_all_vectors(vector_a, vector_b, vector_c, vector_size);
         }
 
-        printf("\nFILHO DE ID %d ENCERRANDO. PAI DE ID %d TALVEZ AINDA OPERANDO.\n", child, parent);
+        printf("\nFILHO DE ID %d ENCERRANDO. PAI DE ID %d PODE AINDA ESTAR EXECUTANDO.\n", child, parent);
     }
 
     
