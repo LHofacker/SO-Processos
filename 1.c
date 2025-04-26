@@ -67,9 +67,6 @@ int main(){
 
         printf("Aguardando processo filho. PID do Filho: %d\n", newPid);
         x = waitpid(newPid, &status, 0);
-        free(VectorA);
-        free(VectorB);
-        free(VectorC);
         printf("Processo filho de PID %d encerrou.\n", newPid);
 
     }else{
