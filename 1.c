@@ -9,23 +9,6 @@
 cálculos pelo processo filho. Dica: utilize a função sleep() no processo filho para retardar a execução de cálculos e também
 mensagens de print no processo pai para indicar o que está acontecendo.*/
 
-/*void printV(int *vec, int vecSize, int flag){
-
-    if(flag == 0){
-        for(int i = 0; i < vecSize; i++){
-
-            printf("VectorA[%d] = %d\n", i, vecSize++);
-        }
-    }else{
-        
-        for(int i = 0; i < vecSize; i++){
-
-            printf("VectorB[%d] = %d\n", i, vecSize++);
-        }
-    }
-
-}*/
-
 int main(){
 
     pid_t newPid, parent, child;

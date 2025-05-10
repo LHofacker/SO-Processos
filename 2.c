@@ -34,6 +34,9 @@ void generate_vector(int **vector, int vector_size){
     for(int i = 0; i<vector_size; i++){
 
         random_number = rand() % 20+1;
+        for(int i = 0; i < vector_size; i++){
+            
+        }
         (*vector)[i] = random_number;
     
     }
