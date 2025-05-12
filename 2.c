@@ -14,42 +14,36 @@ Se o ID do filho for par, o processo pai deve esperar pelo seu encerramento.
 Se o ID for ímpar, não precisa esperar pelo filho.
 */
 
-int get_vector_size(){
+void get_vector_size(int **vector_size){
 
-    int vector_size;
+    *vector_size = malloc(sizeof(int));
 
-    printf("Insira o tamanho dos vetores a serem multiplicados: ");
-    scanf("%d", &vector_size);
-    printf("vector_size: %d\n\n", vector_size);
-
-
-    return vector_size;
+    printf("Insira o tamanho dos vetores a serem utilizados: ");
+    scanf("%d", *vector_size);
+    printf("vector_size: %d\n\n", **vector_size);
 }
 
-void generate_vector(int **vector, int vector_size){
+void generate_vector(int **vector, int *vector_size){
 
-    *vector = malloc(vector_size*sizeof(int));
+    *vector = malloc(*vector_size*sizeof(int));
     int random_number;
 
-    for(int i = 0; i<vector_size; i++){
+    for(int i = 0; i < *vector_size; i++){
 
         random_number = rand() % 20+1;
-        for(int i = 0; i < vector_size; i++){
-            
-        }
         (*vector)[i] = random_number;
     
     }
     
 }
 
-void print_vector(int *vector, int vector_size, char *vector_name){
+void print_vector(int *vector, int *vector_size, char *vector_name){
 
     printf("%s = (", vector_name);
 
-    for (int i = 0; i < vector_size; i++){
+    for (int i = 0; i < *vector_size; i++){
 
-        if(i<vector_size-1){
+        if(i < *vector_size-1){
 
             printf("%d, ", vector[i]);
         }else{
@@ -61,32 +55,33 @@ void print_vector(int *vector, int vector_size, char *vector_name){
     printf(")\n");
 }
 
-void print_all_vectors(int *vector1, int *vector2, int *vector3, int vector_size){
+void print_all_vectors(int *vector1, int *vector2, int *vector3, int *vector_size){
 
     print_vector(vector1, vector_size, "VectorA");
     print_vector(vector2, vector_size, "VectorB");
     print_vector(vector3, vector_size, "VectorC");
+    printf("\n");
 }
 
-void add_vector(int *vector1, int *vector2, int *vector_res, int vector_size){
+void add_vector(int *vector1, int *vector2, int *vector_res, int *vector_size){
 
-    for(int i = 0; i < vector_size; i++){
+    for(int i = 0; i < *vector_size; i++){
 
         vector_res[i] = vector1[i] + vector2[i];
     }
 }
 
-void sub_vector(int *vector1, int *vector2, int *vector_res, int vector_size){
+void sub_vector(int *vector1, int *vector2, int *vector_res, int *vector_size){
 
-    for(int i = 0; i < vector_size; i++){
+    for(int i = 0; i < *vector_size; i++){
 
         vector_res[i] = vector1[i] - vector2[i];
     }
 }
 
-void mult_vector(int *vector1, int *vector2, int *vector_res, int vector_size){
+void mult_vector(int *vector1, int *vector2, int *vector_res, int *vector_size){
     
-    for(int i = 0; i < vector_size; i++){
+    for(int i = 0; i < *vector_size; i++){
 
         vector_res[i] = vector1[i] * vector2[i];
     }
@@ -96,13 +91,13 @@ void mult_vector(int *vector1, int *vector2, int *vector_res, int vector_size){
 int main(){
 
     pid_t new_pid, parent, child;
-    int status, vector_size;
+    int status, *vector_size;
     int *vector_a, *vector_b;
     
 
-    vector_size = get_vector_size();
+    get_vector_size(&vector_size);
 
-    int *vector_c = malloc(vector_size*sizeof(int));
+    int *vector_c = malloc(*vector_size*sizeof(int));
 
     srand(time(NULL));
 
@@ -121,6 +116,7 @@ int main(){
 
             waitpid(new_pid, &status, 0);
             printf("FILHO DE ID %d ENCERROU OPERAÇÔES. PAI DE ID %d ENCERRANDO.\n", new_pid, child);
+
         }else{
 
             printf("PAI DE ID %d ENCERRANDO. FILHO DE ID %d PODE AINDA ESTAR EXECUTANDO.\n", child, new_pid);
@@ -167,10 +163,10 @@ int main(){
         printf("\nFILHO DE ID %d ENCERRANDO. PAI DE ID %d PODE AINDA ESTAR EXECUTANDO.\n", child, parent);
     }
 
-    
     free(vector_a);
     free(vector_b);
     free(vector_c);
+    free(vector_size);
 
     return 0;
 }
